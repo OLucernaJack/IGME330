@@ -24,6 +24,7 @@ function getWords() {
 function init() {
     const button = document.querySelector("#myButton");
     button.addEventListener("click", getWords);
+    getWords();
 }
 
 window.onload = init;
