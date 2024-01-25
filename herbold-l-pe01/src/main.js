@@ -1,5 +1,3 @@
-"use strict";
-
 const words1 = ["Acute", "Aft", "Anti-matter", "Bipolar", "Cargo", "Command", "Communication", "Computer", "Deuterium", "Dorsal", "Emergency", "Engineering", "Environmental", "Flight", "Fore", "Guidance", "Heat", "Impulse", "Increased", "Inertial", "Infinite", "Ionizing", "Isolinear", "Lateral", "Linear", "Matter", "Medical", "Navigational", "Optical", "Optimal", "Optional", "Personal", "Personnel", "Phased", "Reduced", "Science", "Ship's", "Shuttlecraft", "Structural", "Subspace", "Transporter", "Ventral"];
 
 const words2 = ["Propulsion", "Dissipation", "Sensor", "Improbability", "Buffer", "Graviton", "Replicator", "Matter", "Anti-matter", "Organic", "Power", "Silicon", "Holographic", "Transient", "Integrity", "Plasma", "Fusion", "Control", "Access", "Auto", "Destruct", "Isolinear", "Transwarp", "Energy", "Medical", "Environmental", "Coil", "Impulse", "Warp", "Phaser", "Operating", "Photon", "Deflector", "Integrity", "Control", "Bridge", "Dampening", "Display", "Beam", "Quantum", "Baseline", "Input"];
@@ -8,23 +6,34 @@ const words3 = ["Chamber", "Interface", "Coil", "Polymer", "Biosphere", "Platfor
 
 console.log(words1[0]);
 
-function getRandom(arry) {
-    const random = Math.floor(Math.random() * arry.length);
-    return arry[random];
+import { getRandom } from "./utils";
+
+const getWords = numLines => {
+    for (let i = 0; i < numLines; i++) {
+        const firstWord = getRandom(words1);
+        const secondWord = getRandom(words2);
+        const thirdWord = getRandom(words3);
+
+        if (i == 0) {
+            document.querySelector("#output").innerHTML = `${firstWord} ${secondWord} ${thirdWord}`;
+        }
+        else {
+            document.querySelector("#output").innerHTML += `<br>${firstWord} ${secondWord} ${thirdWord}`;
+        }
+
+    }
+
+
+
+
 }
-function getWords() {
-    const firstWord = getRandom(words1);
-    const secondWord = getRandom(words2);
-    const thirdWord = getRandom(words3);
 
-    document.querySelector("#output").innerHTML = `${firstWord} ${secondWord} ${thirdWord}`;
-
-}
-
-function init() {
-    const button = document.querySelector("#myButton");
-    button.addEventListener("click", getWords);
-    getWords();
+const init = () => {
+    const button = document.querySelector("#button-1");
+    const buttonExtra = document.querySelector("#button-5");
+    button.addEventListener("click", () => { getWords(1) });
+    buttonExtra.addEventListener("click", () => { getWords(5) });
+    getWords(1);
 }
 
 window.onload = init;
