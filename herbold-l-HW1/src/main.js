@@ -9,15 +9,18 @@ function loadJsonXHR() {
     const xhr = new XMLHttpRequest;
     xhr.onload = (e) => {
         console.log(`XHR Status: ${e.target.status}`);
-        const json = e.target.responseXML;
-        if (!json) {
+        let json;
+        try {
+            json = JSON.parse(e.target.responseText);
+        }
+        catch {
             document.querySelector("#output").innerHTML = "JSON Invalid";
             return;
         }
         //WORK ON THIS TO FINSIH HW
-        const words1 = json.querySelector();
-        const words2 = json.querySelector();
-        const words3 = json.querySelector();
+        const words1 = json["words1"];
+        const words2 = json["words2"];
+        const words3 = json["words3"];
 
         const allWords = [words1, words2, words3];
 
