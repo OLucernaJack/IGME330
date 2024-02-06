@@ -1,8 +1,6 @@
 import { getRandom } from "./utils.js";
 
-const words = loadJsonXHR();
-
-//console.log(words1[0]);
+let words;
 
 function loadJsonXHR() {
     const url = "./data/babble-data.json";
@@ -24,7 +22,10 @@ function loadJsonXHR() {
 
         const allWords = [words1, words2, words3];
 
-        return allWords;
+        words = allWords;
+
+        //start up get words
+        getWords(1);
     }
     xhr.onerror = e => console.log(`OnError Status: ${e.target.status}`);
     xhr.open("GET", url);
@@ -47,11 +48,12 @@ const getWords = numLines => {
 }
 
 const init = () => {
+    loadJsonXHR();
     const button = document.querySelector("#button-1");
     const buttonExtra = document.querySelector("#button-5");
     button.addEventListener("click", () => { getWords(1) });
     buttonExtra.addEventListener("click", () => { getWords(5) });
-    getWords(1);
+
 }
 
 init();
