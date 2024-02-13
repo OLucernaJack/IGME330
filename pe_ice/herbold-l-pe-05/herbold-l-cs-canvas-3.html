@@ -8,18 +8,6 @@
         canvas {
             border: 1px solid gray;
         }
-
-        body {
-            font-family: sans-serif;
-        }
-
-        button {
-            font-size: 1.2em;
-        }
-
-        section {
-            margin: .5em 0 .5em 0;
-        }
     </style>
     <script>
         // #0 - in this class we will always use ECMAScript 5's "strict" mode
@@ -85,13 +73,6 @@
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
-
-        function canvasClicked(e) {
-            let rect = e.target.getBoundingClientRect();
-            let mouseX = e.clientX - rect.x;
-            let mouseY = e.clientY - rect.y;
-            console.log(mouseX, mouseY);
-        }
     </script>
 </head>
 
@@ -99,19 +80,6 @@
     <canvas width="640" height="480">
         Get a real browser!
     </canvas>
-    <section>
-        <button id="btnPlay">Play</button>
-        <button id="btnPause">Pause</button>
-    </section>
-    <section>
-        <span>
-            <input type="checkbox" id="cbRectangles" checked>
-            <label for="cbRectangles">Rectangles</label>
-        </span>
-    </section>
-    <section>
-        <p>Click on the screen to "spraypaint" rectangles (you probably want the screensaver to be paused)</p>
-    </section>
 </body>
 
 </html>

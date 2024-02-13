@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Screensaver</title>
+    <style>
+        canvas {
+            border: 1px solid gray;
+        }
+
+        body {
+            font-family: sans-serif;
+        }
+
+        button {
+            font-size: 1.2em;
+        }
+
+        section {
+            margin: .5em 0 .5em 0;
+        }
+    </style>
+    <script>
+        // #0 - in this class we will always use ECMAScript 5's "strict" mode
+        // See what 'use strict' does here:
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/Strict_mode
+        "use strict";
+
+        // #1 call the `init` function after the pages loads
+        window.onload = init;
+        let ctx;
+        let paused = false;
+        let createRects = true;
+
+        function init() {
+            console.log("page loaded!");
+
+            setupUI();
+
+            // A - `canvas` variable points at <canvas> tag
+            let canvas = document.querySelector("canvas");
+
+            // B - the `ctx` variable points at a "2D drawing context"
+            ctx = canvas.getContext("2d");
+
+            ctx.fillStyle = 'green';
+            ctx.fillRect(20, 15, 600, 450);
+
+            update(ctx);
+
+
+
+        }
+
+        function setupUI() {
+            const playButton = document.querySelector("#btnPlay");
+            const pauseButton = document.querySelector("#btnPause");
+            const rectsCheck = document.querySelector("#cbRectangles");
+            playButton.addEventListener("click", () => { playControl("play") });
+            pauseButton.addEventListener("click", () => { playControl("pause") });
+            rectsCheck.addEventListener("change", () => { playControl("checkbox", rectsCheck) });
+        }
+
+        function update() {
+            requestAnimationFrame(update);
+            if (paused) {
+
+            }
+            else {
+
+                drawRandomRect(ctx);
+            }
+
+        }
+
+        function playControl(btnType, btn = null) {
+            if (btnType == "play") {
+                paused = false;
+            }
+            if (btnType == "pause") {
+                paused = true;
+            }
+            if (btnType == "checkbox") {
+                createRects = btn.checked;
+            }
+
+        }
+
+        function drawRandomRect(ctx) {
+            drawRectangle(ctx,
+                getRandomInt(0, 640),   //random x location
+                getRandomInt(0, 480),   //random y location
+                getRandomInt(10, 200),  //random width
+                getRandomInt(10, 200),  //random height
+                getRandomColor(),       //random fill color
+                getRandomInt(1, 12),    //random line width
+                getRandomColor()        //random line color
+            );
+        }
+
+        function drawRectangle(ctx, x, y, width, height, fillStyle = "black", lineWidth = 0, strokeStyle = "black") {
+            ctx.save();
+            ctx.fillStyle = fillStyle;
+            ctx.lineWidth = lineWidth;
+            ctx.strokeStyle = strokeStyle;
+            ctx.beginPath();
+            ctx.rect(x, y, width, height);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // handy helper functions!
+        function getRandomColor() {
+            function getByte() {
+                return 55 + Math.round(Math.random() * 200);
+            }
+            //return "rgba(" + getByte() + "," + getByte() + "," + getByte() + ",.8)";
+            return `rgba(${getByte()},${getByte()},${getByte()},.8`;
+        }
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function canvasClicked(e) {
+            let rect = e.target.getBoundingClientRect();
+            let mouseX = e.clientX - rect.x;
+            let mouseY = e.clientY - rect.y;
+            console.log(mouseX, mouseY);
+        }
+    </script>
+</head>
+
+<body>
+    <canvas width="640" height="480">
+        Get a real browser!
+    </canvas>
+    <section>
+        <button id="btnPlay">Play</button>
+        <button id="btnPause">Pause</button>
+    </section>
+    <section>
+        <span>
+            <input type="checkbox" id="cbRectangles" checked>
+            <label for="cbRectangles">Rectangles</label>
+        </span>
+    </section>
+    <section>
+        <p>Click on the screen to "spraypaint" rectangles (you probably want the screensaver to be paused)</p>
+    </section>
+</body>
+
+</html>
