@@ -9,6 +9,7 @@
 
 import * as utils from './utils.js';
 import * as audio from './audio.js';
+import * as canvas from './canvas.js';
 
 // 1 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
