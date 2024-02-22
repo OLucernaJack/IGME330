@@ -14,10 +14,11 @@
         const canvasWidth = 400, canvasHeight = 300;
         let ctx;
         let n = 0;
-        const divergence = 137.9;
-        const c = 4;
+        let divergence = 137.3;
+        let c = 0;
         const fps = 60;
-
+        let value = "primary";
+        let color;
         window.onload = init;
 
         function init() {
@@ -25,28 +26,37 @@
             canvas.width = canvasWidth;
             canvas.height = canvasHeight;
             ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+            color = `rgb(${n % 256},0,255)`;
+            setupUI();
             loop();
         }
 
         function loop() {
             setTimeout(loop, 1000 / fps);
             let a = n * dtr(divergence);
+            c += 0.01;
+            let size = c;
             let r = c * Math.sqrt(n);
             //console.log(a, r);
             let x = r * Math.cos(a) + canvasWidth / 2;
             let y = r * Math.sin(a) + canvasHeight / 2;
-            //console.log(x, y);
 
-            //let color = `rgb(${n % 256},0,255)`;
+            if (value == "primary") {
+                color = `rgb(${n % 256},0,255)`;
+            }
+            if (value == "secondary") {
+                let aDegrees = (n * divergence) % 256;
+                color = `rgb(${aDegrees},0,255)`;
+            }
+            if (value == "tertiary") {
+                let aDegrees = (n * divergence) % 361;
+                color = `rgb(${aDegrees},0,255)`;
+            }
+            if (value == "fourth") {
+                color = `hsl(${n / 5 % 361},100%,50%)`;
+            }
 
-            //let aDegrees = (n * divergence) % 256;
-            //let color = `rgb(${aDegrees},0,255)`;
-
-            //let aDegrees = (n * divergence) % 361;
-            //let color = `hsl(${aDegrees},100%,50%)`;
-
-            let color = `hsl(${n / 5 % 361},100%,50%)`;
-            drawCircle(ctx, x, y, 2, color);
+            drawCircle(ctx, x, y, size, color);
             n++;
         }
 
@@ -65,11 +75,58 @@
             ctx.restore();
         }
 
+        function setupUI() {
+            let colorChoices = document.querySelector("#color-choices");
+            colorChoices.addEventListener("change", () => { value = colorChoices.value; ctx.fillRect(0, 0, canvasWidth, canvasHeight); n = 0; c = 0; })
+
+            let divergenceChoices = document.querySelector("#divergence-choices");
+            divergenceChoices.addEventListener("change", () => { divergence = parseFloat(divergenceChoices.value); ctx.fillRect(0, 0, canvasWidth, canvasHeight); n = 0; c = 0; })
+
+            let resetApp = document.querySelector("#reset-app");
+            resetApp.addEventListener("click", () => { n = 0; c = 0; ctx.fillRect(0, 0, canvasWidth, canvasHeight); })
+
+        }
+
+
     </script>
 </head>
 
 <body>
     <canvas id="canvas"></canvas>
+
+    <div>
+        <label for="color-choices">Choose a color:</label>
+        <select id="color-choices">
+            <option value="primary">Option 1</option>
+            <option value="secondary">Option 2</option>
+            <option value="tertiary">Option 3</option>
+            <option value="fourth">Option 4</option>
+        </select>
+        <label for="divergence-choices">Divergence:</label>
+        <select id="divergence-choices">
+            <option value="137.3">137.3</option>
+            <option value="137.5">137.5</option>
+            <option value="137.7">137.7</option>
+            <option value="137.9">137.9</option>
+        </select>
+    </div>
+    <div>
+        <button id="reset-app">Reset</button>
+    </div>
+    <div>
+        <h2>
+            Lucy's Changes:
+
+        </h2>
+
+        <body>
+            #1: Changed FPS to 60. <br>
+            #2: matched c and size. <br>
+            #3: Added a color change option (4 options).
+            Added a divergence change option.
+            Added a reset app button that sets n back to 0. <br>
+        </body>
+    </div>
 
 </body>
 
