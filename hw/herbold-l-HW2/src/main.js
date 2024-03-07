@@ -17,8 +17,12 @@ const drawParams = {
     showCircles: true,
     showNoise: false,
     showInvert: false,
-    showEmboss: false
+    volumeLevel: 0,
+    showFreq: true,
+    showTime: false
 };
+
+const fps = 60;
 
 // 1 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
@@ -77,6 +81,8 @@ const setupUI = (canvasElement) => {
         audio.setVolume(e.target.value);
         //udate volume label
         volumeLabel.innerHTML = Math.round((e.target.value / 2 * 100));
+
+        drawParams.volumeLevel = Math.round((e.target.value / 2 * 100));
     }
     //set value of label to match initial value of slider
     volumeSlider.dispatchEvent(new Event("input"));
@@ -93,26 +99,45 @@ const setupUI = (canvasElement) => {
 
     }
 
-    //add all checkboxes
-    let gradientCB = document.querySelector('#gradient-cb');
+    //datatype selects
+    let dataSelect = document.querySelector("#select-data");
+    dataSelect.onchange = e => {
+        if (dataSelect.value == "frequency-data") {
+            drawParams.showFreq = true;
+            drawParams.showTime = false;
+        }
+        else {
+            drawParams.showFreq = false;
+            drawParams.showTime = true;
+        }
+    }
+
+    //add treble/bass checkboxes
+    let highshelfCB = document.querySelector('#highshelf-cb');
+    let lowshelfCB = document.querySelector('#lowshelf-cb');
+
+    highshelfCB.addEventListener("change", () => { audio.toggleHighShelf(highshelfCB.checked) });
+    lowshelfCB.addEventListener("change", () => { audio.toggleLowShelf(lowshelfCB.checked) });
+
+
+    //add appearance checkboxes
+    // let gradientCB = document.querySelector('#gradient-cb');
     let barsCB = document.querySelector('#bars-cb');
     let circlesCB = document.querySelector('#circles-cb');
     let noiseCB = document.querySelector('#noise-cb');
     let invertCB = document.querySelector('#invert-cb');
-    let embossCB = document.querySelector('#emboss-cb');
 
     //setup events
-    gradientCB.addEventListener("change", () => { drawParams.showGradient = gradientCB.checked; });
+    // gradientCB.addEventListener("change", () => { drawParams.showGradient = gradientCB.checked; });
     barsCB.addEventListener("change", () => { drawParams.showBars = barsCB.checked; });
     circlesCB.addEventListener("change", () => { drawParams.showCircles = circlesCB.checked; });
     noiseCB.addEventListener("change", () => { drawParams.showNoise = noiseCB.checked; });
     invertCB.addEventListener("change", () => { drawParams.showInvert = invertCB.checked; });
-    embossCB.addEventListener("change", () => { drawParams.showEmboss = embossCB.checked; });
 } // end setupUI
 
 const loop = () => {
     /* NOTE: This is temporary testing code that we will delete in Part II */
-    requestAnimationFrame(loop);
+    setTimeout(loop, 1000 / fps);
     canvas.draw(drawParams);
 
 }

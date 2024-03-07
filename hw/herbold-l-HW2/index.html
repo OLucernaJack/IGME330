@@ -10,7 +10,7 @@
 
 <body>
     <main>
-        <canvas width="800" height="400"></canvas>
+        <canvas width="1000" height="600"></canvas>
         <div id="controls">
             <section>
                 <button id="btn-play" data-playing="no"></button>
@@ -23,22 +23,28 @@
                         <option value="media/The Picard Song.mp3">The Picard Song</option>
                     </select>
                 </label>
+                <label>Data Type:
+                    <select id="select-data">
+                        <option value="frequency-data" selected>Frequency Data</option>
+                        <option value="time-data">Time Domain Data</option>
+                    </select>
+                </label>
             </section>
 
             <section>
                 Volume: <input type="range" id="vol-slide" min="0" max="2" value="1" step="0.01">
                 <span id="vol-label">???</span>
+                <span><input type="checkbox" id="highshelf-cb"><label for="highshelf-cb">Enable Treble</label></span>
+                <span><input type="checkbox" id="lowshelf-cb"><label for="lowshelf-cb">Enable Bass</label></span>
             </section>
 
             <section>
-                <span><input type="checkbox" id="gradient-cb" checked><label for="gradient-cb">Show
-                        Gradient</label></span>
                 <span><input type="checkbox" id="bars-cb" checked><label for="bars-cb">Show Bars</label></span>
                 <span><input type="checkbox" id="circles-cb" checked><label for="circles-cb">Show Circles</label></span>
                 <!-- we'll use this 4th checkbox soon! -->
                 <span><input type="checkbox" id="noise-cb"><label for="noise-cb">Show Noise</label></span>
                 <span><input type="checkbox" id="invert-cb"><label for="invert-cb">Show Invert</label></span>
-                <span><input type="checkbox" id="emboss-cb"><label for="emboss-cb">Show Emboss</label></span>
+
             </section>
         </div>
     </main>

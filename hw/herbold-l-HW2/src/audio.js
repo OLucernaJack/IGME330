@@ -3,7 +3,7 @@ let audioCtx;
 
 // **These are "private" properties - these will NOT be visible outside of this module (i.e. file)**
 // 2 - WebAudio nodes that are part of our WebAudio audio routing graph
-let element, sourceNode, analyserNode, gainNode;
+let element, sourceNode, analyserNode, highshelfFilter, lowshelfFilter, gainNode;
 
 // 3 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
@@ -33,15 +33,12 @@ const setupWebaudio = filePath => {
     // 5 - create an analyser node
     analyserNode = audioCtx.createAnalyser();// note the UK spelling of "Analyser"
 
-    /*
-    // 6
-    We will request DEFAULTS.numSamples number of samples or "bins" spaced equally 
-    across the sound spectrum.
-    
-    If DEFAULTS.numSamples (fftSize) is 256, then the first bin is 0 Hz, the second is 172 Hz, 
-    the third is 344Hz, and so on. Each bin contains a number between 0-255 representing 
-    the amplitude of that frequency.
-    */
+    highshelfFilter = audioCtx.createBiquadFilter();
+
+    lowshelfFilter = audioCtx.createBiquadFilter();
+
+    highshelfFilter.type = "highshelf";
+    lowshelfFilter.type = "lowshelf";
 
     // fft stands for Fast Fourier Transform
     analyserNode.fftSize = DEFAULTS.numSamples;
@@ -52,7 +49,9 @@ const setupWebaudio = filePath => {
 
 
     // 8 - connect the nodes - we now have an audio graph
-    sourceNode.connect(analyserNode);
+    sourceNode.connect(highshelfFilter);
+    highshelfFilter.connect(lowshelfFilter);
+    lowshelfFilter.connect(analyserNode);
     analyserNode.connect(gainNode);
     gainNode.connect(audioCtx.destination);
 }
@@ -74,4 +73,24 @@ const setVolume = value => {
     gainNode.gain.value = value;
 }
 
-export { audioCtx, setupWebaudio, playCurrentSound, pauseCurrentSound, loadSoundFile, setVolume, analyserNode };
+const toggleHighShelf = (highshelf) => {
+    if (highshelf) {
+        highshelfFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+        highshelfFilter.gain.setValueAtTime(25, audioCtx.currentTime);
+    }
+    else {
+        highshelfFilter.gain.setValueAtTime(0, audioCtx.currentTime);
+    }
+}
+
+const toggleLowShelf = (lowshelf) => {
+    if (lowshelf) {
+        lowshelfFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+        lowshelfFilter.gain.setValueAtTime(15, audioCtx.currentTime);
+    }
+    else {
+        lowshelfFilter.gain.setValueAtTime(10, audioCtx.currentTime);
+    }
+}
+
+export { audioCtx, toggleHighShelf, toggleLowShelf, setupWebaudio, playCurrentSound, pauseCurrentSound, loadSoundFile, setVolume, analyserNode };

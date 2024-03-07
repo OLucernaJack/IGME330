@@ -9,7 +9,7 @@
 
 import * as utils from './utils.js';
 
-let ctx, canvasWidth, canvasHeight, gradient, analyserNode, audioData;
+let ctx, canvasWidth, canvasHeight, gradient, analyserNode, audioData, barRotation = 0;
 
 
 const setupCanvas = (canvasElement, analyserNodeRef) => {
@@ -29,10 +29,16 @@ const setupCanvas = (canvasElement, analyserNodeRef) => {
 const draw = (params = {}) => {
     // 1 - populate the audioData array with the frequency data from the analyserNode
     // notice these arrays are passed "by reference" 
-    analyserNode.getByteFrequencyData(audioData);
+    if (params.showFreq) {
+        analyserNode.getByteFrequencyData(audioData);
+    }
+
 
     // OR
-    //analyserNode.getByteTimeDomainData(audioData); // waveform data
+    if (params.showTime) {
+        analyserNode.getByteTimeDomainData(audioData);
+    }
+    // // waveform data
 
     // 2 - draw background
     ctx.save();
@@ -42,38 +48,53 @@ const draw = (params = {}) => {
     ctx.restore();
 
     // 3 - draw gradient
-    if (params.showGradient) {
-        ctx.save();
-        ctx.fillStyle = gradient;
-        ctx.globalAlpha = 0.3;
-        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-        ctx.restore();
-    }
+    // if (params.showGradient) {
+    //     ctx.save();
+    //     ctx.fillStyle = gradient;
+    //     ctx.globalAlpha = 0.3;
+    //     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    //     ctx.restore();
+    // }
 
 
     // 4 - draw bars
     if (params.showBars) {
-        let barSpacing = 4;
-        let margin = 5;
-        let screenWidthForBars = canvasWidth - (audioData.length * barSpacing) - margin * 2;
-        let barWidth = screenWidthForBars / audioData.length;
-        let barheight = 200;
-        let topSpacing = 100;
+        const BAR_WIDTH = 10;
+        const MAX_BAR_HEIGHT = 100;
+        const PADDING = 2;
+        const MIDDLE_Y = canvasHeight / 2;
+        const MIDDLE_X = canvasWidth / 2;
+
+
 
         ctx.save();
-        ctx.fillStyle = `rgba(255,255,255,0.50)`;
-        ctx.strokeStyle = `rgba(0,0,0,0.50)`;
+        ctx.translate(MIDDLE_X, MIDDLE_Y / 2 - 100);
 
-        for (let i = 0; i < audioData.length; i++) {
-            ctx.fillRect(margin + i * (barWidth + barSpacing), topSpacing + 256 - audioData[i], barWidth, barheight);
-            ctx.strokeRect(margin + i * (barWidth + barSpacing), topSpacing + 256 - audioData[i], barWidth, barheight);
+        for (let b of audioData) {
+            let percent = b / 255;
+            if (percent < .02) percent = .02;
+            ctx.translate(BAR_WIDTH, 0);
+            ctx.rotate(Math.PI * 2 / 128);
+            ctx.save(); //for flip
+            ctx.rotate(barRotation);
+            ctx.scale(1, -1);
+            ctx.fillStyle = `rgba(${b},${b - 128},${255 - b},.3)`;
+            ctx.fillRect(0, 0, BAR_WIDTH, MAX_BAR_HEIGHT * percent * (params.volumeLevel / 100));
+            ctx.restore();
+            ctx.translate(PADDING, 0);
+
         }
+
+
+        //ctx.restore();
         ctx.restore();
+        barRotation += 0.01;
+
     }
 
     // 5 - draw circles
     if (params.showCircles) {
-        let maxRadius = canvasHeight / 4;
+        let maxRadius = params.volumeLevel * 2;
         ctx.save();
         ctx.globalAlpha = 0.5;
         for (let i = 0; i < audioData.length; i++) {
@@ -82,26 +103,26 @@ const draw = (params = {}) => {
 
             let circleRadius = percent * maxRadius;
             ctx.beginPath();
-            ctx.fillStyle = utils.makeColor(255, 111, 111, .34 - percent / 3.0);
-            ctx.arc(canvasWidth / 2, canvasHeight / 2, circleRadius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = utils.makeColor(255, 200, 200, .34 - percent / 3.0);
+            ctx.arc(canvasWidth / 2, params.volumeLevel + canvasHeight / 2 - 100, circleRadius, 0, 2 * Math.PI, false);
             ctx.fill();
             ctx.closePath();
 
             //bluish
             ctx.beginPath();
-            ctx.fillStyle = utils.makeColor(0, 0, 255, .10 - percent / 10.0);
-            ctx.arc(canvasWidth / 2, canvasHeight / 2, circleRadius * 1.5, 0, 2 * Math.PI, false);
+            ctx.fillStyle = utils.makeColor(200, 200, 255, .10 - percent / 10.0);
+            ctx.arc(canvasWidth / 2, params.volumeLevel + canvasHeight / 2 - 100, circleRadius * 1.5, 0, 2 * Math.PI, false);
             ctx.fill();
             ctx.closePath();
 
             //yellowish
-            ctx.save();
+            //ctx.save();
             ctx.beginPath();
-            ctx.fillStyle = utils.makeColor(200, 200, 0, .5 - percent / 5.0);
-            ctx.arc(canvasWidth / 2, canvasHeight / 2, circleRadius * .50, 0, 2 * Math.PI, false);
+            ctx.fillStyle = utils.makeColor(200, 200, 100, .5 - percent / 5.0);
+            ctx.arc(canvasWidth / 2, params.volumeLevel + canvasHeight / 2 - 100, circleRadius * .50, 0, 2 * Math.PI, false);
             ctx.fill();
             ctx.closePath();
-            ctx.restore();
+            //ctx.restore();
         }
         ctx.restore();
     }
@@ -123,13 +144,15 @@ const draw = (params = {}) => {
 
     for (let i = 0; i < length; i += 4) {
         // C) randomly change every 20th pixel to red
-        if (params.showNoise && Math.random() < .05) {
+        if (params.showNoise && Math.random() < .001) {
             // data[i] is the red channel
             // data[i+1] is the green channel
             // data[i+2] is the blue channel
             // data[i+3] is the alpha channel
             data[i] = data[i + 1] = data[i + 2] = 0;// zero out the red and green and blue channels
-            data[i + 1] = 255;// make the green channel 100% green
+            data[i] = utils.getRandom(0, 255);
+            data[i + 1] = utils.getRandom(0, 255);
+            data[i + 2] = utils.getRandom(0, 255);
         } // end if
 
         if (params.showInvert) {
@@ -140,12 +163,6 @@ const draw = (params = {}) => {
         }
     } // end for
 
-    if (params.showEmboss) {
-        for (let j = 0; j < limit; j++) {
-            if (j % 4 == 3) continue;
-            data[j] = 127 + 2 * data[j] - data[j + 4] - data[j + width * 4]; //this part isn't working on my screen
-        }
-    }
 
     // D) copy image data back to canvas
     ctx.putImageData(imageData, 0, 0);
