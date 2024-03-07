@@ -25,7 +25,7 @@ const DEFAULTS = Object.freeze({
     sound1: "./media/New Adventure Theme.mp3"
 });
 
-function init() {
+const init = () => {
     console.log("init called");
     console.log(`Testing utils.getRandomColor() import: ${utils.getRandomColor()}`);
     audio.setupWebaudio(DEFAULTS.sound1);
@@ -35,9 +35,10 @@ function init() {
     loop();
 }
 
-function setupUI(canvasElement) {
+const setupUI = (canvasElement) => {
     // A - hookup fullscreen button
-    const fsButton = document.querySelector("#fsButton");
+    const fsButton = document.querySelector("#btn-fs");
+    const playButton = document.querySelector("#btn-play");
 
     // add .onclick event to button
     fsButton.onclick = e => {
@@ -67,8 +68,8 @@ function setupUI(canvasElement) {
     };
 
     //C - hookup volume slider & label
-    let volumeSlider = document.querySelector("#volumeSlider");
-    let volumeLabel = document.querySelector("#volumeLabel");
+    let volumeSlider = document.querySelector("#vol-slide");
+    let volumeLabel = document.querySelector("#vol-label");
 
     //add .oninput to slider
     volumeSlider.oninput = e => {
@@ -81,7 +82,7 @@ function setupUI(canvasElement) {
     volumeSlider.dispatchEvent(new Event("input"));
 
     //D - hookup track
-    let trackSelect = document.querySelector("#trackSelect");
+    let trackSelect = document.querySelector("#select-track");
     //add .onchange event to trackSelect
     trackSelect.onchange = e => {
         audio.loadSoundFile(e.target.value);
@@ -93,12 +94,12 @@ function setupUI(canvasElement) {
     }
 
     //add all checkboxes
-    let gradientCB = document.querySelector('#gradientCB');
-    let barsCB = document.querySelector('#barsCB');
-    let circlesCB = document.querySelector('#circlesCB');
-    let noiseCB = document.querySelector('#noiseCB');
-    let invertCB = document.querySelector('#invertCB');
-    let embossCB = document.querySelector('#embossCB');
+    let gradientCB = document.querySelector('#gradient-cb');
+    let barsCB = document.querySelector('#bars-cb');
+    let circlesCB = document.querySelector('#circles-cb');
+    let noiseCB = document.querySelector('#noise-cb');
+    let invertCB = document.querySelector('#invert-cb');
+    let embossCB = document.querySelector('#emboss-cb');
 
     //setup events
     gradientCB.addEventListener("change", () => { drawParams.showGradient = gradientCB.checked; });
@@ -109,33 +110,10 @@ function setupUI(canvasElement) {
     embossCB.addEventListener("change", () => { drawParams.showEmboss = embossCB.checked; });
 } // end setupUI
 
-function loop() {
+const loop = () => {
     /* NOTE: This is temporary testing code that we will delete in Part II */
     requestAnimationFrame(loop);
     canvas.draw(drawParams);
-    // 1) create a byte array (values of 0-255) to hold the audio data
-    // normally, we do this once when the program starts up, NOT every frame
-    //let audioData = new Uint8Array(audio.analyserNode.fftSize / 2);
 
-    // 2) populate the array of audio data *by reference* (i.e. by its address)
-    //audio.analyserNode.getByteFrequencyData(audioData);
-
-    // 3) log out the array and the average loudness (amplitude) of all of the frequency bins
-    //console.log(audioData);
-
-    // console.log("-----Audio Stats-----");
-    // let totalLoudness = audioData.reduce((total, num) => total + num);
-    // let averageLoudness = totalLoudness / (audio.analyserNode.fftSize / 2);
-    // let minLoudness = Math.min(...audioData); // ooh - the ES6 spread operator is handy!
-    // let maxLoudness = Math.max(...audioData); // ditto!
-    // // Now look at loudness in a specific bin
-    // // 22050 kHz divided by 128 bins = 172.23 kHz per bin
-    // // the 12th element in array represents loudness at 2.067 kHz
-    // let loudnessAt2K = audioData[11];
-    // console.log(`averageLoudness = ${averageLoudness}`);
-    // console.log(`minLoudness = ${minLoudness}`);
-    // console.log(`maxLoudness = ${maxLoudness}`);
-    // console.log(`loudnessAt2K = ${loudnessAt2K}`);
-    // console.log("---------------------");
 }
 export { init };
