@@ -7,9 +7,11 @@
 // In this instance, we feel the code is more readable if written this way
 // If you want to re-write these as ES6 arrow functions, to be consistent with the other files, go ahead!
 
+
 import * as utils from './utils.js';
 import * as audio from './audio.js';
 import * as canvas from './canvas.js';
+
 
 const drawParams = {
     showGradient: true,
@@ -70,6 +72,7 @@ const setupUI = (canvasElement) => {
         }
 
     };
+
 
     //C - hookup volume slider & label
     let volumeSlider = document.querySelector("#vol-slide");
@@ -133,12 +136,14 @@ const setupUI = (canvasElement) => {
     circlesCB.addEventListener("change", () => { drawParams.showCircles = circlesCB.checked; });
     noiseCB.addEventListener("change", () => { drawParams.showNoise = noiseCB.checked; });
     invertCB.addEventListener("change", () => { drawParams.showInvert = invertCB.checked; });
+
 } // end setupUI
 
 const loop = () => {
     /* NOTE: This is temporary testing code that we will delete in Part II */
     setTimeout(loop, 1000 / fps);
     canvas.draw(drawParams);
+
 
 }
 export { init };

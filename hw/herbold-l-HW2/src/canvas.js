@@ -7,10 +7,51 @@
       - maybe a better name for this file/module would be *visualizer.js* ?
 */
 
+class Sprite {
+    constructor(x, y, radius, color, MAX, MIN) {
+        Object.assign(this, { x, y, radius, color, MAX, MIN });
+        Object.seal(this);
+    }
+
+    update(params) {
+
+        let direction = 1;
+        if (params.showFreq) {
+            this.y = 5;
+            if (this.x < this.MIN || this.x > this.MAX) {
+                direction = direction * -1;
+                this.x += direction;
+            }
+            this.x += direction;
+        }
+        if (params.showTime) {
+            this.x = 5;
+            if (this.y < this.MIN || this.y > this.MAX) {
+                direction = direction * -1;
+                this.y += direction;
+            }
+            this.y += direction;
+        }
+    }
+
+    draw(ctx) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.restore();
+    }
+}
+
+
+
 import * as utils from './utils.js';
 
 let ctx, canvasWidth, canvasHeight, gradient, analyserNode, audioData, barRotation = 0;
 
+let spriteArray = [];
 
 const setupCanvas = (canvasElement, analyserNodeRef) => {
     // create drawing context
@@ -39,8 +80,10 @@ const draw = (params = {}) => {
         analyserNode.getByteTimeDomainData(audioData);
     }
     // // waveform data
+    spriteArray.push(new Sprite(40, 40, 3, "red", 50, 30));
+    spriteArray.push(new Sprite(400, 40, 3, "blue", 50, 30));
+    // 2 - draw background 
 
-    // 2 - draw background
     ctx.save();
     ctx.fillStyle = "black";
     ctx.globalAlpha = .1;
@@ -55,7 +98,10 @@ const draw = (params = {}) => {
     //     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     //     ctx.restore();
     // }
-
+    for (let s of spriteArray) {
+        s.update(params)
+        s.draw(ctx);
+    }
 
     // 4 - draw bars
     if (params.showBars) {
@@ -126,6 +172,11 @@ const draw = (params = {}) => {
         }
         ctx.restore();
     }
+
+
+
+
+
     // 6 - bitmap manipulation
     // TODO: right now. we are looping though every pixel of the canvas (320,000 of them!), 
     // regardless of whether or not we are applying a pixel effect
@@ -162,6 +213,7 @@ const draw = (params = {}) => {
             data[i + 2] = 255 - blue;
         }
     } // end for
+
 
 
     // D) copy image data back to canvas
