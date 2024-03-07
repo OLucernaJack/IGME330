@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Radial Gradient</title>
+</head>
+
+<body>
+    <canvas width="640" height="480"></canvas>
+    <script>
+        let ctx = document.querySelector("canvas").getContext("2d");
+        let grad = ctx.createRadialGradient(76, 76, 20, 150, 150, 125);
+        grad.addColorStop(0, 'white');
+
+        grad.addColorStop(1, 'purple');
+
+        ctx.fillStyle = grad;
+        //ctx.fillRect(0, 0, 640, 480);
+
+        ctx.beginPath();
+        ctx.arc(150, 150, 125, 0, Math.PI * 2, false);
+        ctx.closePath();
+        ctx.fill();
+    </script>
+</body>
+
+</html>
