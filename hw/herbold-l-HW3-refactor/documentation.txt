@@ -1,0 +1,14 @@
+couldnt get classes to work somehow
+
+Added audio effects: highshelf and lowshelf
+
+Class name is Sprite, it was supposed to bob up and down when its using frequency data, and left and right when its using time data
+
+i added title, audio name, and audio file location, didn't get a chance to add them to the js
+
+removed gradient bg, added rgb noise, made circles and rotating bars change size based on volume volume level
+
+I would grade myself maybe a 10-12% on the canvas itself, but maybe 5% on the UI
+
+This is not my best work, as I got stuck on lowshelf because I couldn't identify if lowshelf was even working
+and ran out of time to make sure everything was in a working order.
