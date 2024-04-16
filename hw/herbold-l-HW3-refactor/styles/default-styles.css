@@ -4,9 +4,8 @@ body {
 }
 
 canvas {
-    margin-left: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+
+    margin: 1rem;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
     background: #fafafa;
 }

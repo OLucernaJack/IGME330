@@ -6,47 +6,136 @@
     <title>Audio Visualizer</title>
     <link href="./styles/default-styles.css" type="text/css" rel="stylesheet" />
     <!-- <script src="./src/loader.js" type="module"></script> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/96fe62d184.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <main>
-        <canvas width="1000" height="600"></canvas>
-        <div id="controls">
-            <section>
-                <button id="btn-play" data-playing="no"></button>
-                <button id="btn-fs">Full Screen</button>
+    <main class=" has-background-dark">
+        <nav class="navbar has-shadow is-white">
+            <!-- logo / brand-->
+            <div class="navbar-brand">
+                <a class="navbar-item">
+                    <i class="fa-solid fa-radio"></i>
+                </a>
+                <a class="navbar-burger" id="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+            </div>
 
-                <label>Track:
-                    <select id="select-track">
-                        <option value="media/New Adventure Theme.mp3" selected>New Adventure Theme</option>
-                        <option value="media/Peanuts Theme.mp3">Peanuts Theme</option>
-                        <option value="media/The Picard Song.mp3">The Picard Song</option>
-                    </select>
-                </label>
-                <label>Data Type:
-                    <select id="select-data">
-                        <option value="frequency-data" selected>Frequency Data</option>
-                        <option value="time-data">Time Domain Data</option>
-                    </select>
-                </label>
-            </section>
+            <div class="navbar-menu" id="nav-links">
+                <div class="navbar-start">
 
-            <section>
-                Volume: <input type="range" id="vol-slide" min="0" max="2" value="1" step="0.01">
-                <span id="vol-label">???</span>
-                <span><input type="checkbox" id="highshelf-cb"><label for="highshelf-cb">Enable Treble</label></span>
-                <span><input type="checkbox" id="lowshelf-cb"><label for="lowshelf-cb">Enable Bass</label></span>
-            </section>
+                    <a class="navbar-item is-hoverable has-text-weight-bold" href="index.html">
+                        App
+                    </a>
 
-            <section>
-                <span><input type="checkbox" id="bars-cb" checked><label for="bars-cb">Show Bars</label></span>
-                <span><input type="checkbox" id="circles-cb" checked><label for="circles-cb">Show Circles</label></span>
-                <!-- we'll use this 4th checkbox soon! -->
-                <span><input type="checkbox" id="noise-cb"><label for="noise-cb">Show Noise</label></span>
-                <span><input type="checkbox" id="invert-cb"><label for="invert-cb">Show Invert</label></span>
+                    <a class="navbar-item is-hoverable" href="about.html">
+                        About
+                    </a>
+                </div>
+            </div>
+        </nav>
 
-            </section>
-        </div>
+        <section class="section">
+            <div class="container">
+                <div class="columns m-auto is-vcentered">
+
+                    <div class="column is-mobile">
+                        <div class="hero is-large is-info p-2">
+                            <div class="hero-head">
+                                <p class="title">
+                                    <canvas width="1000" height="600"></canvas>
+                                </p>
+                                <p class="subtitle">
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="column is-mobile">
+                        <div class="hero is-large is-info p-2">
+                            <div id="controls">
+                                <section id="primary-control">
+                                    <div>
+                                        <button class="has-background-primary m-1" id="btn-play"
+                                            data-playing="no"></button>
+                                        <button class="has-background-warning m-1" id="btn-fs">Full Screen</button>
+                                    </div>
+
+                                    <div class="m-1">
+                                        <label>Track:
+                                            <select id="select-track">
+                                                <option value="media/New Adventure Theme.mp3" selected>New Adventure
+                                                    Theme
+                                                </option>
+                                                <option value="media/Peanuts Theme.mp3">Peanuts Theme</option>
+                                                <option value="media/The Picard Song.mp3">The Picard Song</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </section>
+
+                                <section id="secondary-control">
+                                    <p class="has-text-dark has-text-weight-bold">Sound Data</p>
+                                    <div>
+                                        <label>Data Type:
+                                            <select id="select-data">
+                                                <option value="frequency-data" selected>Frequency Data</option>
+                                                <option value="time-data">Time Domain Data</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        Volume: <input type="range" id="vol-slide" min="0" max="2" value="1"
+                                            step="0.01"><span id="vol-label">???</span>
+                                    </div>
+                                    <div>
+                                        <span><input type="checkbox" id="highshelf-cb"><label for="highshelf-cb">Enable
+                                                Treble</label></span>
+                                    </div>
+                                    <div>
+                                        <span><input type="checkbox" id="lowshelf-cb"><label for="lowshelf-cb">Enable
+                                                Bass</label></span>
+                                    </div>
+
+                                </section>
+
+                                <section id="checkboxes">
+                                    <p class="has-text-dark has-text-weight-bold">Graphics</p>
+                                    <div>
+                                        <span><input type="checkbox" id="bars-cb" checked><label for="bars-cb">Show
+                                                Bars</label></span>
+                                    </div>
+                                    <div>
+                                        <span><input type="checkbox" id="circles-cb" checked><label
+                                                for="circles-cb">Show
+                                                Circles</label></span>
+                                    </div>
+                                    <div>
+                                        <span><input type="checkbox" id="noise-cb"><label for="noise-cb">Show
+                                                Noise</label></span>
+                                    </div>
+
+                                    <div>
+                                        <span><input type="checkbox" id="invert-cb"><label for="invert-cb">Show
+                                                Invert</label></span>
+                                    </div>
+
+
+
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+
     </main>
     <script src="dist/bundle.js"></script>
 </body>

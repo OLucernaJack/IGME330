@@ -137,6 +137,13 @@ const setupUI = (canvasElement) => {
     noiseCB.addEventListener("change", () => { drawParams.showNoise = noiseCB.checked; });
     invertCB.addEventListener("change", () => { drawParams.showInvert = invertCB.checked; });
 
+    // mobile menu
+    const burgerIcon = document.querySelector('#burger');
+    const navbarMenu = document.querySelector('#nav-links');
+
+    burgerIcon.addEventListener('click', () => {
+        navbarMenu.classList.toggle('is-active');
+    })
 } // end setupUI
 
 const loop = () => {
