@@ -1,78 +1,78 @@
 {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-			"id" : "p79",
-      "properties": {
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"id": "p79",
+			"properties": {
 				"title": "Letchworth State Park",
 				"description": "Letchworth State Park, renowned as the \"Grand Canyon of the East,\" is one of the most scenically magnificent areas in the eastern U.S. The Genesee River roars through the gorge over three major waterfalls between cliffs--as high as 600 feet in some places--surrounded by lush forests. Hikers can choose among 66 miles of hiking trails. Trails are also available for horseback riding, biking, snowmobiling, and cross-country skiing. Letchworth offers nature, history and performing arts programs, guided walks, tours, a summer lecture series, whitewater rafting, kayaking, a pool for swimming and hot air ballooning.",
 				"url": "https://parks.ny.gov/parks/letchworth",
 				"address": "1 Letchworth State Park, Castile, NY 14427",
 				"phone": "(585) 493-3600"
 			},
-      "geometry": {
-        "coordinates": [
-          -78.051170,
-          42.570148
-        ],
-        "type": "Point"
-      }
-    },
+			"geometry": {
+				"coordinates": [
+					-78.051170,
+					42.570148
+				],
+				"type": "Point"
+			}
+		},
 		{
-      "type": "Feature",
+			"type": "Feature",
 			"id": "p20",
-      "properties": {
+			"properties": {
 				"title": "Hamlin Beach State Park",
 				"description": "Hamlin Beach State Park's clear water, sandy beaches and 264 tent and trailer campsites bring thousands of visitors to the park each year. The Yanty Creek Marsh area at the east end of the park has a mile long self-guided trail. In addition, there are 6 miles of hiking and biking trails, as well as snowmobile and cross-country skiing. Visitors can launch car-top boats, fish for salmon and trout and enjoy the picnic facilities.",
 				"url": "https://parks.ny.gov/parks/hamlinbeach",
 				"address": "1 Hamlin Beach Blvd, West Hamlin, NY 14464",
 				"phone": "(585) 964-2462"
 			},
-      "geometry": {
-        "coordinates": [
-          -77.946754,
-          43.355236
-        ],
-        "type": "Point"
-      }
-    },
+			"geometry": {
+				"coordinates": [
+					-77.946754,
+					43.355236
+				],
+				"type": "Point"
+			}
+		},
 		{
-      "type": "Feature",
+			"type": "Feature",
 			"id": "p180",
-      "properties": {
+			"properties": {
 				"title": "Brookhaven State Park",
 				"description": "<p>Once property of Brookhaven National Laboratory and former military installation called Camp Upton, Brookhaven State Park is 1,638-acres and is part of the central core of the Long Island Pine Barrens. The Park runs along the east side William Floyd Parkway north of Whiskey Road, and between NY 25 and NY 25A. For the avid hiker, the park features The Brookhaven Trail, which heads south through the park and hooks up with the white-blazed Paumanok Path.</p><p>In addition to various oak-pine habitats this park also contains scattered wetlands. Some of Brookhaven's foliage includes flowering dogwood, wild geranium, Christmas fern and pitch pine. Coastal plain ponds also lie within the park boundaries.</p>",
 				"url": "https://parks.ny.gov/parks/brookhaven",
 				"address": "2500 William Floyd Parkway, Ridge, NY 11961",
 				"phone": "(631) 929-4314"
 			},
-      "geometry": {
-        "coordinates": [
-          -72.878899,
-          40.913059
-        ],
-        "type": "Point"
-      }
-    },
+			"geometry": {
+				"coordinates": [
+					-72.878899,
+					40.913059
+				],
+				"type": "Point"
+			}
+		},
 		{
-      "type": "Feature",
+			"type": "Feature",
 			"id": "p35",
-      "properties": {
+			"properties": {
 				"title": "Allan H. Treman State Marine Park",
 				"description": "<p>Allan H. Treman is one of the largest inland marinas in New York State.  It boasts 370 seasonal, 30 transient and 30 dry boat slips.  For folks trailering boats, the park has an 8-lane boat launch ramp.  The marina is an excellent port-of-call off the Barge Canal system at the south end of Cayuga Lake and within easy walking distance to the city of Ithaca along the Cayuga Waterfront Trail.  For bird watching fans, the Hog Hole wetland and the Cayuga Lake shoreline make for great opportunities to view waterfowl and wetland species.</p><p>This is a marina only park.  We're often confused with Robert H. Treman State Park, which is located 4 miles to the south, not on Cayuga Lake.</p>",
 				"url": "https://parks.ny.gov/parks/AllanTreman",
 				"address": "805 Taughannock Blvd. (Rt 89), Ithaca, NY 14850",
 				"phone": "(607) 272-1460"
 			},
-      "geometry": {
-        "coordinates": [
-          -76.512681,
-          42.458818
-        ],
-        "type": "Point"
-      }
-    },
+			"geometry": {
+				"coordinates": [
+					-76.512681,
+					42.458818
+				],
+				"type": "Point"
+			}
+		},
 		{
 			"type": "Feature",
 			"id": "p118",
@@ -199,5 +199,5 @@
 				"type": "Point"
 			}
 		}
-  ]
+	]
 }

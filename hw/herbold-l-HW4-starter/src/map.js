@@ -1,5 +1,5 @@
 // I. Variables & constants
-const accessToken = "";
+const accessToken = "pk.eyJ1IjoiaGFsbG93ZWRsdWN5IiwiYSI6ImNsdmNnNWhrZjBqYjMyaXIyMmNxeDQyYWYifQ.Xxsue7nTVWo6n7sM0UGc6w";
 let map;
 
 // An example of how our GeoJSON is formatted
@@ -8,7 +8,7 @@ let geojson = {
 	type: "FeatureCollection",
 	features: [{
 		"type": "Feature",
-		"id" : "p79",
+		"id": "p79",
 		"properties": {
 			"title": "Letchworth State Park",
 			"description": "Letchworth State Park, renowned as the \"Grand Canyon of the East,\".",
@@ -36,28 +36,66 @@ const initMap = (center) => {
 		center: center,
 		zoom: 5.2
 	});
-	map.addControl(new mapboxgl.NavigationControl({showCompass:false}));
+	map.addControl(new mapboxgl.NavigationControl({ showCompass: false }));
+	// test
+	//const clickHandler = (id) => alert(`${id} was clicked!`);
+	//addMarker(geojson.features[0], "poi", clickHandler);
 };
 
+const addMarker = (feature, className, clickHandler) => {
+	const el = document.createElement('div');
+	el.className = className;
+	el.id = feature.id;
+
+	const html = `
+	<b>${feature.properties.title}</b>
+	<p>${feature.properties.address}</p>
+	<p><b>Phone:</b> ${feature.properties.phone}</p>
+	`;
+
+	const marker = new mapboxgl.Marker(el)
+		.setLngLat(feature.geometry.coordinates)
+		.setPopup(new mapboxgl.Popup({ offset: 10 })
+			.setHTML(html))
+		.addTo(map);
+
+	el.addEventListener("click", () => clickHandler(marker._element.id));
+}
 
 // III. "public" - will be exported
 
 
-const flyTo = (center = [0,0]) => {
+const flyTo = (center = [0, 0]) => {
 	//https://docs.mapbox.com/mapbox-gl-js/api/#map#flyto
 	map.flyTo({ center: center });
 };
 
-const setZoomLevel = (value=0) => {
+const setZoomLevel = (value = 0) => {
 	// https://docs.mapbox.com/help/glossary/zoom-level/
 	map.setZoom(value);
 };
 
-const setPitchAndBearing = (pitch=0,bearing=0) => {
+const setPitchAndBearing = (pitch = 0, bearing = 0) => {
 	// https://docs.mapbox.com/mapbox-gl-js/example/live-update-feature/
 	// https://docs.mapbox.com/mapbox-gl-js/example/set-perspective/
 	map.setPitch(pitch);
 	map.setBearing(bearing);
 };
 
-export { initMap, flyTo, setZoomLevel, setPitchAndBearing };
+const addMarkersToMap = (json, clickHandler) => {
+	geojson = json;
+
+	for (const feature of geojson.features) {
+		addMarker(feature, "poi", clickHandler);
+	}
+};
+
+const getFeatureById = (id) => {
+	for (const feature in geojson.features) {
+		if (feature.id == id) {
+			return feature;
+		}
+	}
+};
+
+export { initMap, flyTo, setZoomLevel, setPitchAndBearing, addMarkersToMap, getFeatureById };
