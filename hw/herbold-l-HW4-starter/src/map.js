@@ -90,12 +90,4 @@ const addMarkersToMap = (json, clickHandler) => {
 	}
 };
 
-const getFeatureById = (id) => {
-	for (const feature in geojson.features) {
-		if (feature.id == id) {
-			return feature;
-		}
-	}
-};
-
-export { initMap, flyTo, setZoomLevel, setPitchAndBearing, addMarkersToMap, getFeatureById };
+export { initMap, flyTo, setZoomLevel, setPitchAndBearing, addMarkersToMap };
