@@ -1,12 +1,13 @@
 import * as map from "./map.js";
 import * as ajax from "./ajax.js";
+import * as storage from "./storage.js";
 
 // I. Variables & constants
 // NB - it's easy to get [longitude,latitude] coordinates with this tool: http://geojson.io/
 const lnglatNYS = [-75.71615970715911, 43.025810763917775];
 const lnglatUSA = [-98.5696, 39.8282];
 let geojson;
-let favoriteIds = ["p20", "p79", "p180", "p43"];
+let favoriteIds = [];
 
 // II. Functions
 const setupUI = () => {
@@ -48,13 +49,13 @@ const showFeatureDetails = (id) => {
 		document.querySelector("#details-2").innerHTML += `<a class="button has-background-success-light has-text-success" id="add-favorite" disabled><i class="fas fa-check"></i>Favorite</a>`;
 		document.querySelector("#details-2").innerHTML += `<a class="button has-background-warning" id="delete-favorite"><i class="fas fa-trash"></i>Delete</a>`;
 		removeFavBtn = document.querySelector("#delete-favorite");
-		removeFavBtn.addEventListener("click", () => { const index = favoriteIds.indexOf(id); favoriteIds.splice(index, 1); refreshFavorites(); showFeatureDetails(id); });
+		removeFavBtn.addEventListener("click", () => { const index = favoriteIds.indexOf(id); favoriteIds.splice(index, 1); storage.writeToLocalStorage("list", favoriteIds); refreshFavorites(); showFeatureDetails(id); });
 	}
 	else {
 		document.querySelector("#details-2").innerHTML += `<a class="button has-background-success" id="add-favorite"><i class="fas fa-check"></i>Favorite</a>`;
 		document.querySelector("#details-2").innerHTML += `<a class="button has-background-warning-light has-text-warning" id="delete-favorite" disabled><i class="fas fa-trash"></i>Delete</a>`;
 		addFavBtn = document.querySelector("#add-favorite");
-		addFavBtn.addEventListener("click", () => { favoriteIds.push(id); refreshFavorites(); showFeatureDetails(id); });
+		addFavBtn.addEventListener("click", () => { favoriteIds.push(id); storage.writeToLocalStorage("list", favoriteIds); refreshFavorites(); showFeatureDetails(id); });
 	}
 	document.querySelector("#details-3").innerHTML = `<p>${feature.properties.description}</p>`;
 };
@@ -64,6 +65,10 @@ const getFeatureById = (id) => {
 };
 
 const refreshFavorites = () => {
+	let favoriteStorage = storage.readFromLocalStorage("list");
+	if (Array.isArray(favoriteStorage)) {
+		favoriteIds = favoriteStorage;
+	}
 	const favoritesContainer = document.querySelector("#favorites-list");
 	favoritesContainer.innerHTML = "";
 	for (const id of favoriteIds) {
@@ -87,6 +92,7 @@ const createFavoriteElement = (id) => {
 		</span>
 		${feature.properties.title}
 	`;
+
 	return a;
 }
 
